@@ -11,6 +11,7 @@ class Api::V1::SensitiveDataController < ApplicationController
   private
 
   def authenticate!
+    # TODO: prevent replay attack
     auth_token = request.headers["Auth-Token"]
     decrypted_data = JwtDecodingService.new(auth_token).decrypt!
     if decrypted_data["iat"] < Time.now.to_i - 3 * months_in_seconds
